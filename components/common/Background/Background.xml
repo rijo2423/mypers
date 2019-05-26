@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+******************************************************************
+** Xfinity TV - Background Component
+** Copyright © COMCAST 2016  All Rights Reserved.
+******************************************************************
+-->
+<component name="Background" extends="Group">
+    <interface>
+		<field id="fillColor" type="String" value="#000000"/>
+	</interface>
+	
+<script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+	<script type="text/brightscript">
+	    <![CDATA[
+	    	Function init()
+				m.background = m.top.findNode("backGround")
+				m.background.width = 1920
+	    		m.background.height = 1080
+	    		m.background.color = m.top.fillColor
+	    		
+			End Function    
+	    ]]>
+	</script>
+	
+	<children>
+    	<Rectangle
+    	    id = "backGround"
+    	/>
+    </children>
+ </component>

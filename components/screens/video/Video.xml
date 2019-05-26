@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="VideoPlayer" extends="Group">
+    <interface>
+    <field id="uniqueId" type="String" value ="Video" />
+    <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
+    <field id="screenType" type="String" value ="screen" />
+    <field id="episodeContent" type="node" alwaysNotify="true" onChange="onEpisodeContent"/>
+	</interface>
+    <script  type="text/brightscript" uri="pkg:/components/screens/video/Video.brs"/>
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+    <script  type="text/brightscript" uri="pkg:/source/service/GAService.brs"/>
+    <children>
+    
+		<Video id = "videoPlayer">
+		</Video>
+		
+		<Poster id="radioBGColor" uri="pkg:/locale/images/$$RES$$/Radio_BG.jpg" width="1920" height="1080"  visible = "false" translation = "[0,0]"/>
+		<Poster id="gradient" uri="pkg:/locale/images/$$RES$$/gradient.png" width="1920" height="1080"  visible = "false" translation = "[0,0]"/>
+		<Poster id="logo"  visible = "false" translation = "[760,427]"/>
+		
+		
+		<Label id="channelName" color="0xDDE2E6" translation = "[120, -100]"/>
+		<RowList id="childRowList"  translation="[120, 1080]"></RowList>
+    
+    	<Animation id="transAnimation1"
+	       duration="0.2"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp1"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, -100.0], [120.0, 100.0] ]"
+    		fieldToInterp="channelName.translation" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation2"
+	       duration="0.2"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp2"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, 100.0], [120.0, -100.0]]"
+    		fieldToInterp="channelName.translation" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation3"
+	       duration="0.2"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp3"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, 1080.0], [120.0, 690.0] ]"
+    		fieldToInterp="childRowList.translation" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation4"
+	       duration="0.2"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp4"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, 690.0], [120.0, 1080.0]]"
+    		fieldToInterp="childRowList.translation" />
+    	</Animation>	
+    
+    </children>
+</component>

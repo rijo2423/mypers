@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+******************************************************************
+** Xfinity TV - Confirmation Screen Implementation
+** Copyright © COMCAST 2016  All Rights Reserved.
+******************************************************************
+-->
+<component name="ConfirmScreen" extends="Group">
+    
+    <interface>
+        <field id="uniqueId" type="String" value ="ConfirmScreen" />
+		<field id="screenType" type="String" value ="screen" />
+		<field id="terminate" type="bool" value ="false"/>
+		<field id="moveToBackGround" type="bool" value="false" />
+		<field id="moveToForeGround" type="bool" value="false" />
+		<field id ="customInfo" type ="assocarray" alwaysNotify="true"/>
+		<field id ="actionConfirmed" type ="bool" alwaysNotify="true"/>
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/common/ConfirmScreen/ConfirmScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    <children>
+    	 <Group id = "ConfirmScreenGroup" > 
+    		<Label id = "description" color="#DDE2E6"/>
+    		<Group id="customBtnGroup" visible="true" >
+			</Group>
+    	</Group>
+    </children>
+</component>

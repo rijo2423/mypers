@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="episodeListItem" extends="Group">
+ 
+<interface> 
+  <field id="itemContent" type="node" onChange="itemContentChanged"/>
+  <field id="focusPercent" type="float" onChange="focusPercentChanged"/>
+   <field id="listHasFocus" type="bool" onChange="focusPercentChanged" />
+</interface>
+ 
+<script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/> 
+<script type="text/brightscript" uri="pkg:/components/common/ItemComponent/episodeListItem.brs"/>
+<script type="text/brightscript" uri="pkg:/source/common/utils/ServiceUtils.brs" />
+
+<children> 
+		<Rectangle id="focusRect" width="700" height="70" translation="[0,0]" visible="false"/>
+		<Poster id="playIcon" uri="pkg:/locale/images/$$RES$$/play-icon.png"  visible="false" translation="[30,15]"></Poster>
+	 	<Label id="searchResultTitle" visible="true" translation="[80,15]"/>
+</children>
+
+</component>

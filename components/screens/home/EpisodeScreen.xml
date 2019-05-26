@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="EpisodeScreen" extends="Group">
+    
+    <interface>
+	 <field id="uniqueId" type="String" value ="EpisodeScreen" />
+	 <field id="deepLinkParams" type="assocarray" />
+	 <field id="content" type="bool" value="false" onChange="contentAvailable" alwaysNotify="true" />
+	 <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
+	 <field id="moveToBackGround" type="bool" value="false" alwaysNotify = "true"/>
+	 <field id="moveToForeGround" type="bool" value="false" alwaysNotify = "true"/>
+	 <field id="setScreenFocus" type="boolean" value="false" onChange="setScreenFocusonRowList" alwaysNotify="true"/>
+    </interface>
+    
+    <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+    <script type="text/brightscript" uri="pkg:/components/screens/home/EpisodeScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    
+    <children>
+    	<Rectangle id="itemRect" color="0x031926" width="928" height="1080" visible="false" translation="[0,0]"></Rectangle>
+		<Label id="episodeTitle" color="0xDDE2E6" visible="true" translation="[85,90]"></Label>
+		<MarkupList visible="false" id="episodeListScreen" itemComponentName="episodeListItem" itemSize="[928, 60]" itemSpacing="[10, 10]" translation="[85,200]" vertFocusAnimationStyle = "floatingFocus" numRows ="10" drawFocusFeedback="false"/>
+    </children>
+</component>

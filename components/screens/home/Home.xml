@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="Home" extends="Group">
+    <interface>
+    <field id="uniqueId" type="String" value ="Home" />
+    <field id="deepLinkParams" type="assocarray"/>
+    <field id="content" type="bool" value="false" onChange="contentAvailable" alwaysNotify="true" />
+    <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
+    <field id="screenType" type="String" value ="screen" />
+	 <field id="moveToBackGround" type="bool" value="false" alwaysNotify = "true"/>
+	 <field id="moveToForeGround" type="bool" value="false" alwaysNotify = "true"/>
+	</interface>
+    <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+    <script  type="text/brightscript" uri="pkg:/components/screens/home/Home.brs"/>
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    <children>
+    	<Group id="homeVideoGroup" visible="true">
+   	    	<Group id="video">
+   	    		<Poster id="homeVideoPoster" visible="true" translation="[0,0]"></Poster>
+				<Poster id="logo" uri="pkg:/locale/images/$$RES$$/dtv-logo.png"  visible = "true" translation = "[130,100]"/>
+   				<Label id="homeVideoTitle" visible="true" translation="[120,339]"></Label>
+   				<Label id="homeVideoDesc" width="837" visible="true" wrap = "true" maxlines ="2" translation="[120,430]"></Label>
+   				<Poster id="homeVideoButton" visible="true" translation="[120,560]"></Poster>   	    	
+   	    	</Group>
+        	<Poster id="leftArrow" uri="pkg:/locale/images/$$RES$$/left_arrow.png"  visible = "true" translation = "[30,440]"/>
+        	<Poster id="rightArrow" uri="pkg:/locale/images/$$RES$$/right_arrow.png"  visible = "true" translation = "[1830,440]"/>   	    	 	    	
+    	</Group>
+    	
+    	<EpisodeScreen id="episodeSection" visible="true" translation="[1920,0]"/>
+    	
+    	<Animation id="transAnimation1"
+	       duration="0.3"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp1"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [0.0, -1080.0], [0.0, 0.0] ]"
+    		fieldToInterp="homeVideoGroup.translation" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation2"
+	       duration="0.3"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp2"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [0.0, 0.0], [0.0, -1080.0]]"
+    		fieldToInterp="homeVideoGroup.translation" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation3"
+	       duration="0.3"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp3"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, 900.0], [120.0, 100.0] ]"
+    		fieldToInterp="genericScreen.translation" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation4"
+	       duration="0.3"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp4"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, 100.0], [120.0, 900.0]]"
+    		fieldToInterp="genericScreen.translation" />
+    	</Animation>  
+    	
+		<Animation id="transAnimation5" duration="0.5" repeat="false"  easeFunction="linear" >
+    		<FloatFieldInterpolator id = "myInterp5_0" key= "[0, 0.25, 0.5, 0.75, 1]" keyValue = "[0.0, 0.25, 0.5, 0.75, 1.0]" fieldToInterp="video1.opacity" />
+    		<FloatFieldInterpolator id = "myInterp5_1" key= "[0, 0.25, 0.5, 0.75, 1]" keyValue = "[1.0, 0.75, 0.5, 0.25, 0.0]" fieldToInterp="video2.opacity" />
+    	</Animation>
+    	
+    	<Animation id="transAnimation6"  duration="0.5" repeat="false"  easeFunction="linear" >
+    		<FloatFieldInterpolator id = "myInterp6_0" key= "[0, 0.25, 0.5, 0.75, 1]" keyValue = "[0.0, 0.25, 0.5, 0.75, 1.0]" fieldToInterp="video2.opacity" />
+    		<FloatFieldInterpolator id = "myInterp6_1" key= "[0, 0.25, 0.5, 0.75, 1]" keyValue = "[1.0, 0.75, 0.5, 0.25, 0.0]" fieldToInterp="video1.opacity" />
+    	</Animation>
+
+    	<Animation id="transAnimation7" duration="0.3"   repeat="false" easeFunction="linear" >
+    		<Vector2DFieldInterpolator id = "myInterp7" key="[0.0, 1.0]" keyValue="[ [1920.0, 0.0], [995.0, 0.0] ]" fieldToInterp="episodeSection.translation" />
+    	</Animation> 
+    	
+    	<Animation id="transAnimation8" duration="0.3"   repeat="false" easeFunction="linear" >
+    		<Vector2DFieldInterpolator id = "myInterp8" key="[0.0, 1.0]" keyValue="[ [995.0, 0.0], [1920.0, 0.0] ]" fieldToInterp="episodeSection.translation" />
+    	</Animation>    	
+    	 	  	
+    	 	  	
+		<Timer id="slideTimer" repeat="true" duration="5"/>
+    	 	  	
+    	
+    </children>
+</component>

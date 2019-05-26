@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="GenericScreen" extends="Group">
+    
+    <interface>
+	 <field id="uniqueId" type="String" value ="GenericScreen" />
+	 <field id="deepLinkParams" type="assocarray" />
+	 <field id="content" type="bool" value="false" onChange="contentAvailable" alwaysNotify="true" />
+	 <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
+	 <field id="moveToBackGround" type="bool" value="false" alwaysNotify = "true"/>
+	 <field id="moveToForeGround" type="bool" value="false" alwaysNotify = "true"/>
+	 <field id="setScreenFocus" type="boolean" value="false" onChange="setScreenFocusonRowList" alwaysNotify="true"/>
+    </interface>
+    
+    <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+    <script type="text/brightscript" uri="pkg:/components/screens/home/GenericScreen.brs" />
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    
+    <children>
+    </children>
+</component>

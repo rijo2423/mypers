@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="GalleryNode" extends="ContentNode">
+ 
+<interface>
+
+  <field id="pgmPosterUrl" type="String"/>
+  <field id="channelName" type="String"/>
+  <field id="streamType" type="String"/>
+  <field id="streamUrl" type="String"/>
+  <field id="channelNumber" type="String"/>
+</interface>
+
+</component>

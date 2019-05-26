@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<component name="SimpleTask" extends="Task">
+
+<interface>
+	<field id="input" type="int" />
+    <field id="output" type="int" value="0" alwaysNotify="true"/>
+</interface>
+
+<script type="text/brightscript" >
+<![CDATA[
+
+sub init()
+	m.top.functionName = "executeTask"
+end sub
+
+function executeTask() as void
+
+	inputValue = m.top.input
+	print "inputValue" ; inputValue
+
+	while true
+		print "fdfdfdfdfdfd" 
+		for i=0 to inputValue-1
+			print "iiii " ; i
+			sleep(10000)
+			m.top.output = i
+			print "m.top.completed => " ; m.top.completed
+			if m.top.completed = true
+				print "hhhhh"
+				exit while
+			end if
+		end for 
+	end while
+	
+	print "gggg"
+	
+end function
+
+]]>
+</script>
+
+</component>

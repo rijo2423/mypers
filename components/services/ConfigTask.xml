@@ -1,0 +1,28 @@
+<component name="ConfigTask" extends="Task">
+
+<interface>
+    <field id="input" type="assocarray" value="" alwaysNotify="true"/>
+    <field id="output" type="assocarray" value="" alwaysNotify="true"/>
+</interface>
+<script type="text/brightscript" uri="pkg:/source/common/utils/ServiceUtils.brs" />
+<script type="text/brightscript">
+<![CDATA[
+Sub init()
+
+End Sub
+
+Function fetchInfo()
+
+	requestParams = m.top.input
+	print "requestParams" ; requestParams
+	response = getServiceResponse(requestParams)
+	print "response"; response
+	m.top.output = response
+	
+end function	
+	
+]]>
+</script>
+
+
+</component>
