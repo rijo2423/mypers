@@ -57,9 +57,9 @@ function onRowItemSelected()
 
     m.selectedItem = m.episodeListScreen.itemSelected
     ? "m.selectedItem" ; m.selectedItem
-    focusedContent = m.episodeListScreen.content
+    contentList = m.episodeListScreen.content
     navigationInfo = {terminate:false, moveToBackground:true, appTerminate:false, eventKey :"VideoPlayer"}
-    customInfo = {focusedCont : focusedContent, currentIndex : m.selectedItem, deepLink : false, source : "EpisodeScreen"}
+    customInfo = {content : contentList, currentIndex : m.selectedItem, autoplay : true, deepLink : false, source : "EpisodeScreen"}
     publishAppEvent("Ok", true, "EpisodeScreen", m.top.screenType, navigationInfo, customInfo) 
     
 end function

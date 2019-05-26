@@ -1,11 +1,9 @@
 function init()
 
     m.video = m.top.findNode("videoPlayer")
-    'm.radio = m.top.findNode("radioPlayer")  
-    observeFields()
-    
+    m.currentIndex = -1
+    m.autoplay = false
     m.deviceId = m.global.deviceId
-    ? "m.deviceId==========" ; m.deviceId
     
 end function
 
@@ -13,19 +11,47 @@ Function observeFields()
     m.video.observeField("state","onVideoPlayerStateChange")
 End Function
 
+Function unObserveFields()
+    m.video.unobserveField("state")
+End Function
+
 function onVideoPlayerStateChange(event as Object)
 
     state = event.getData()
     ? "state=============" ; state
-    if state = "finished" or state = "error"
+    if state = "finished"
+         unObserveFields()
          m.video.control = "stop"
+         
+         exitplayer = true
+         if m.autoplay = true
+            if m.customInfo.content.getChild(m.currentIndex + 1) <> invalid
+                exitplayer = false
+                m.customInfo.currentIndex = m.currentIndex + 1
+                m.top.customInfo = m.customInfo
+            end if
+         end if
+         
+         if exitplayer = true
+             if m.deepLink = true
+                launchHome()
+             else
+                navigationInfo = {terminate:true, moveToBackground:false, appTerminate:false}
+                customInfo = {source : m.source}
+                publishAppEvent("back", true, "Video", m.top.screenType, navigationInfo, customInfo)                
+             end if         
+         end if
+    else if state = "error"
+         unObserveFields()
+         m.video.control = "stop"
+             
          if m.deepLink = true
             launchHome()
          else
             navigationInfo = {terminate:true, moveToBackground:false, appTerminate:false}
             customInfo = {source : m.source}
             publishAppEvent("back", true, "Video", m.top.screenType, navigationInfo, customInfo)                
-         end if
+         end if         
     end if
 
 end function
@@ -46,36 +72,44 @@ end function
 
 function customInfoChanged()
     print "customInfoChanged" ; m.top.customInfo
+    
+    observeFields()
+    
     m.streamUrl = ""
     m.streamType = "homeVideo"
     m.pgmPosterUrl = ""
     m.channelName = ""
     m.colmIndex = 0
     m.name = ""
-    m.currentIndex = 0
+    m.currentIndex = -1
     
     m.top.setFocus(true)
     
-    m.source = m.top.customInfo.source
+    m.customInfo = m.top.customInfo
+    m.source = m.customInfo.source
     
-    print "m.top.customInfo.focusedCont" ; m.top.customInfo.focusedCont
+    if m.customInfo.autoplay <> invalid
+        m.autoplay = m.customInfo.autoplay
+    else
+        m.autoplay = false
+    end if
     
-    if m.top.customInfo.focusedCont <> invalid
+    if m.customInfo.content <> invalid
     
         if m.source <> invalid and m.source = "EpisodeScreen"
  
-            m.currentIndex = m.top.customInfo.currentIndex
-            m.streamUrl = m.top.customInfo.focusedCont[m.currentIndex].streamUrl
-            m.streamType = m.top.customInfo.focusedCont[m.currentIndex].streamType
-            m.pgmPosterUrl = m.top.customInfo.focusedCont[m.currentIndex].pgmPosterUrl
-            m.channelName = m.top.customInfo.focusedCont[m.currentIndex].channelName
-            m.colmIndex = m.top.customInfo[m.currentIndex].colmIndex
+            m.currentIndex = m.customInfo.currentIndex
+            m.streamUrl = m.customInfo.content.getChild(m.currentIndex).streamUrl
+            m.streamType = m.customInfo.content.getChild(m.currentIndex).streamType
+            m.pgmPosterUrl = m.customInfo.content.getChild(m.currentIndex).pgmPosterUrl
+            m.channelName = m.customInfo.content.getChild(m.currentIndex).channelName
+            m.colmIndex = m.customInfo.colmIndex
             
-            if m.top.customInfo.focusedCont[m.currentIndex].name <> invalid
-                m.name = m.top.customInfo.focusedCont[m.currentIndex].name
+            if m.customInfo.content.getChild(m.currentIndex).name <> invalid
+                m.name = m.customInfo.content.getChild(m.currentIndex).name
             end if
             
-            item = m.top.customInfo.focusedCont[m.currentIndex]
+            item = m.customInfo.content.getChild(m.currentIndex)
             
             pageTitle = item.channelName
             pageUrl = "/films/title/" + pageTitle
@@ -83,17 +117,17 @@ function customInfoChanged()
         
         else
     
-            m.streamUrl = m.top.customInfo.focusedCont.streamUrl
-            m.streamType = m.top.customInfo.focusedCont.streamType
-            m.pgmPosterUrl = m.top.customInfo.focusedCont.pgmPosterUrl
-            m.channelName = m.top.customInfo.focusedCont.channelName
-            m.colmIndex = m.top.customInfo.colmIndex
+            m.streamUrl = m.customInfo.content.streamUrl
+            m.streamType = m.customInfo.content.streamType
+            m.pgmPosterUrl = m.customInfo.content.pgmPosterUrl
+            m.channelName = m.customInfo.content.channelName
+            m.colmIndex = m.customInfo.colmIndex
             
-            if m.top.customInfo.focusedCont.name <> invalid
-                m.name = m.top.customInfo.focusedCont.name
+            if m.customInfo.content.name <> invalid
+                m.name = m.customInfo.content.name
             end if
             
-            item = m.top.customInfo.focusedCont
+            item = m.customInfo.content
             
             pageTitle = item.channelName
             pageUrl = "/films/title/" + pageTitle
@@ -103,15 +137,15 @@ function customInfoChanged()
         
     end if
     
-    if m.top.customInfo.homeVideo <> invalid and m.top.customInfo.homeVideo.videoUrl <> invalid
-        m.streamUrl = m.top.customInfo.homeVideo.videoUrl
+    if m.customInfo.homeVideo <> invalid and m.customInfo.homeVideo.videoUrl <> invalid
+        m.streamUrl = m.customInfo.homeVideo.videoUrl
     end if
     
-    if m.top.customInfo.focusedCont <> invalid and m.top.customInfo.focusedCont.videoUrl <> invalid
-        m.streamUrl = m.top.customInfo.focusedCont.streamUrl        
+    if m.customInfo.content <> invalid and m.customInfo.content.videoUrl <> invalid
+        m.streamUrl = m.customInfo.content.streamUrl        
     end if
     
-    m.deepLink = m.top.customInfo.deepLink
+    m.deepLink = m.customInfo.deepLink
     print "m.deepLink" ; m.deepLink
     
     m.channelInfo = m.global.channelInfo
@@ -177,6 +211,7 @@ Function OnKeyEvent(key, press) as Boolean
             else
             
                 ? "sadjnasfkjbasdjklfbjkadsbfjkadsbfkjadsbjk" ; m.source
+                unObserveFields()
                 m.video.control = "stop"
                 
                 if m.deepLink = true
