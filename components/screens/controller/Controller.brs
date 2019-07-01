@@ -109,7 +109,7 @@ function readHomeVideos()
     m.homeTask.functionName = "fetchInfo"
     
     requestParams = {}
-    requestParams.url = "http://jcagarcia.com/dtv/content/homeInfo.json"
+    requestParams.url = "http://dominicanatv.net/content/homeInfo.json"
     requestParams.httpMethod = "GET"
     requestParams.responseType = "TEXT"
     
@@ -148,7 +148,7 @@ function readChannels()
     m.channelTask.functionName = "fetchInfo"
     
     requestParams = {}
-    requestParams.url = "http://jcagarcia.com/dtv/content/channelInfo.json"
+    requestParams.url = "http://dominicanatv.net/content/channelInfo.json"
     requestParams.httpMethod = "GET"
     requestParams.responseType = "TEXT"
     
@@ -185,7 +185,7 @@ function readRadios()
     m.radioTask.functionName = "fetchInfo"
     
     requestParams = {}
-    requestParams.url = "http://jcagarcia.com/dtv/content/radioInfo.json"
+    requestParams.url = "http://dominicanatv.net/content/radioInfo.json"
     requestParams.httpMethod = "GET"
     requestParams.responseType = "TEXT"
     
