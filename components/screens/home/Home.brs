@@ -11,6 +11,8 @@ Function Init()
     m.homeVideoGroup = m.top.findNode("homeVideoGroup")
     m.episodeScreenVisible = false
     
+    m.paginationGrp = m.top.findNode("paginationGrp")
+    
     m.slideTimer = m.top.findNode("slideTimer")
     m.slideTimer.ObserveField("fire","onSlideTimerFired")
      
@@ -34,9 +36,35 @@ function initValues()
 
 end function
 
+function drawPagination()
+
+    videos = m.homeVideos
+
+    for i = 0 to videos.Count()-1
+        rect = m.paginationGrp.createChild("Rectangle")
+        if m.currentIndex = i
+            rect.color = "0xFFFFFF"
+        else
+            rect.color = "0x4D5D66"
+        end if
+        rect.id = "rect" + i.tostr()
+        rect.width = 56
+        rect.height = 6
+    end for
+    
+end function
+
+function removePagination()
+
+    count = m.paginationGrp.getChildCount()
+    ssss = m.paginationGrp.removeChildrenIndex(count, 0)
+    
+end function
+
 function contentAvailable() 
 
     drawHomeScreen()
+    drawPagination()
     createGalleryRow()
     startSlideTimer()
      
@@ -45,7 +73,7 @@ end function
 sub onSlideTimerFired()
 
     stopSlideTimer()
-    showNextSlide()
+    showNextSlide("right")
     startSlideTimer()
 
 end sub
@@ -62,15 +90,27 @@ function startAnimation(index)
 
 end function
 
-function showNextSlide()
+function showNextSlide(key)
 
     nextIndex = m.currentIndex + 1
+    if key = "left"
+        videoCount = m.homeVideos.Count()
+        if m.currentIndex = 0
+            nextIndex = videoCount - 1
+        else
+            nextIndex = m.currentIndex - 1
+        end if
+    end if
+    
     if m.homeVideos[nextIndex] = invalid
         nextIndex = 0    
     end if
     m.currentIndex = nextIndex
     ? "onSlideTimerFired" ; m.currentIndex 
     drawHomeScreen()
+    
+    removePagination()
+    drawPagination()
 
 end function
 
@@ -87,7 +127,7 @@ function drawHomeScreen()
     else
         m.homeVideoButton.uri = "pkg:/locale/images/$$RES$$/Watch.png"
     end if
-
+    
 end function
 
 function customInfoChanged()
@@ -175,7 +215,7 @@ Function OnKeyEvent(key, press) as Boolean
             end if
         else if key = "left" or key = "right"
             stopSlideTimer()
-            showNextSlide()
+            showNextSlide(key)
             startSlideTimer()
         end if
     

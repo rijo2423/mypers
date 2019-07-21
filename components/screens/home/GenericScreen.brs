@@ -44,7 +44,7 @@ function contentAvailable()
         m.focusedCont = arrayContent[0,0]
         colmIndex = StrToI(m.deepLinkParams.contentID) - 1
         navigationInfo = {terminate:false, moveToBackground:true, appTerminate:false, eventKey :"VideoPlayer"}
-        customInfo = {colmIndex : colmIndex, content : m.focusedCont, source : "Home"}
+        customInfo = {colmIndex : colmIndex, focusedCont : m.focusedCont, source : "Home"}
         publishAppEvent("Ok", true, "Home", m.top.screenType, navigationInfo, customInfo) 
     else
         createComponentGallery()
@@ -110,7 +110,7 @@ end function
 function OnRowItemSelected()
 
     navigationInfo = {terminate:false, moveToBackground:true, appTerminate:false, eventKey :"VideoPlayer"}
-    customInfo = {colmIndex : m.colmIndex, content : m.focusedCont, deepLink : false, source : "Channel"}
+    customInfo = {colmIndex : m.colmIndex, focusedCont : m.focusedCont, deepLink : false, source : "Channel"}
     publishAppEvent("Ok", true, "Home", m.top.screenType, navigationInfo, customInfo)      
 
 end function

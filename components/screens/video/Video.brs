@@ -1,60 +1,17 @@
 function init()
 
-    m.video = m.top.findNode("videoPlayer")
-    m.currentIndex = -1
-    m.autoplay = false
+    'm.video = m.top.findNode("videoPlayer")
+    'm.radio = m.top.findNode("radioPlayer")  
+    'observeFields()
+    
     m.deviceId = m.global.deviceId
+    ? "m.deviceId==========" ; m.deviceId
     
 end function
 
 Function observeFields()
-    m.video.observeField("state","onVideoPlayerStateChange")
+    'm.radio.observeField("state","onVideoPlayerStateChange")
 End Function
-
-Function unObserveFields()
-    m.video.unobserveField("state")
-End Function
-
-function onVideoPlayerStateChange(event as Object)
-
-    state = event.getData()
-    ? "state=============" ; state
-    if state = "finished"
-         unObserveFields()
-         m.video.control = "stop"
-         
-         exitplayer = true
-         if m.autoplay = true
-            if m.customInfo.content.getChild(m.currentIndex + 1) <> invalid
-                exitplayer = false
-                m.customInfo.currentIndex = m.currentIndex + 1
-                m.top.customInfo = m.customInfo
-            end if
-         end if
-         
-         if exitplayer = true
-             if m.deepLink = true
-                launchHome()
-             else
-                navigationInfo = {terminate:true, moveToBackground:false, appTerminate:false}
-                customInfo = {source : m.source}
-                publishAppEvent("back", true, "Video", m.top.screenType, navigationInfo, customInfo)                
-             end if         
-         end if
-    else if state = "error"
-         unObserveFields()
-         m.video.control = "stop"
-             
-         if m.deepLink = true
-            launchHome()
-         else
-            navigationInfo = {terminate:true, moveToBackground:false, appTerminate:false}
-            customInfo = {source : m.source}
-            publishAppEvent("back", true, "Video", m.top.screenType, navigationInfo, customInfo)                
-         end if         
-    end if
-
-end function
 
 function showRadioBGColor()
 
@@ -72,80 +29,42 @@ end function
 
 function customInfoChanged()
     print "customInfoChanged" ; m.top.customInfo
-    
-    observeFields()
-    
     m.streamUrl = ""
     m.streamType = "homeVideo"
     m.pgmPosterUrl = ""
     m.channelName = ""
     m.colmIndex = 0
-    m.name = ""
-    m.currentIndex = -1
     
     m.top.setFocus(true)
     
-    m.customInfo = m.top.customInfo
-    m.source = m.customInfo.source
+    m.source = m.top.customInfo.source
     
-    if m.customInfo.autoplay <> invalid
-        m.autoplay = m.customInfo.autoplay
-    else
-        m.autoplay = false
-    end if
+    print "m.top.customInfo.focusedCont" ; m.top.customInfo.focusedCont
     
-    if m.customInfo.content <> invalid
-    
-        if m.source <> invalid and m.source = "EpisodeScreen"
- 
-            m.currentIndex = m.customInfo.currentIndex
-            m.streamUrl = m.customInfo.content.getChild(m.currentIndex).streamUrl
-            m.streamType = m.customInfo.content.getChild(m.currentIndex).streamType
-            m.pgmPosterUrl = m.customInfo.content.getChild(m.currentIndex).pgmPosterUrl
-            m.channelName = m.customInfo.content.getChild(m.currentIndex).channelName
-            m.colmIndex = m.customInfo.colmIndex
-            
-            if m.customInfo.content.getChild(m.currentIndex).name <> invalid
-                m.name = m.customInfo.content.getChild(m.currentIndex).name
-            end if
-            
-            item = m.customInfo.content.getChild(m.currentIndex)
-            
-            pageTitle = item.channelName
-            pageUrl = "/films/title/" + pageTitle
-            fireGAEvent(pageTitle, pageUrl, m.deviceId, "player-video", "playVideo", pageTitle, 0)
+    if m.top.customInfo.focusedCont <> invalid
+        m.streamUrl = m.top.customInfo.focusedCont.streamUrl
+        m.streamType = m.top.customInfo.focusedCont.streamType
+        m.pgmPosterUrl = m.top.customInfo.focusedCont.pgmPosterUrl
+        m.channelName = m.top.customInfo.focusedCont.channelName
+        m.colmIndex = m.top.customInfo.colmIndex
         
-        else
-    
-            m.streamUrl = m.customInfo.content.streamUrl
-            m.streamType = m.customInfo.content.streamType
-            m.pgmPosterUrl = m.customInfo.content.pgmPosterUrl
-            m.channelName = m.customInfo.content.channelName
-            m.colmIndex = m.customInfo.colmIndex
-            
-            if m.customInfo.content.name <> invalid
-                m.name = m.customInfo.content.name
-            end if
-            
-            item = m.customInfo.content
-            
-            pageTitle = item.channelName
-            pageUrl = "/films/title/" + pageTitle
-            fireGAEvent(pageTitle, pageUrl, m.deviceId, "player-video", "playVideo", pageTitle, 0)
+        item = m.top.customInfo.focusedCont
         
-        end if
+        pageTitle = item.channelName
+        pageUrl = "/films/title/" + pageTitle
+        fireGAEvent(pageTitle, pageUrl, m.deviceId, "player-video", "playVideo", pageTitle, 0)
         
     end if
     
-    if m.customInfo.homeVideo <> invalid and m.customInfo.homeVideo.videoUrl <> invalid
-        m.streamUrl = m.customInfo.homeVideo.videoUrl
+    if m.top.customInfo.homeVideo <> invalid and m.top.customInfo.homeVideo.videoUrl <> invalid
+        m.streamUrl = m.top.customInfo.homeVideo.videoUrl
     end if
     
-    if m.customInfo.content <> invalid and m.customInfo.content.videoUrl <> invalid
-        m.streamUrl = m.customInfo.content.streamUrl        
+    if m.top.customInfo.focusedCont <> invalid and m.top.customInfo.focusedCont.videoUrl <> invalid
+        m.streamUrl = m.top.customInfo.focusedCont.streamUrl        
     end if
     
-    m.deepLink = m.customInfo.deepLink
+    m.deepLink = m.top.customInfo.deepLink
     print "m.deepLink" ; m.deepLink
     
     m.channelInfo = m.global.channelInfo
@@ -164,15 +83,13 @@ end function
 
 function setVideo() as void
 
+    m.video = m.top.findNode("videoPlayer")
     videoContent = createObject("RoSGNode", "ContentNode")
     videoContent.url = m.streamUrl
     videoContent.streamformat = ""
-    videoContent.title = m.name
     m.video.content = videoContent
     m.video.control = "play"
     m.focusOwner = "videoplayer"
-    
-    m.video.setFocus(true)
     
     m.channelNode = m.top.findNode("channelName")
     m.channelNode.text = m.channelName
@@ -183,10 +100,6 @@ function setVideo() as void
     m.logo = m.top.findNode("logo")
     m.logo.uri = m.pgmPosterUrl
     
-end function
-
-function onEpisodeContent()
-    m.episodeContent = m.top.episodeContent    
 end function
 
 Function OnKeyEvent(key, press) as Boolean
@@ -211,7 +124,6 @@ Function OnKeyEvent(key, press) as Boolean
             else
             
                 ? "sadjnasfkjbasdjklfbjkadsbfjkadsbfkjadsbjk" ; m.source
-                unObserveFields()
                 m.video.control = "stop"
                 
                 if m.deepLink = true

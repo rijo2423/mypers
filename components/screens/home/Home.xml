@@ -19,13 +19,14 @@
 				<Poster id="logo" uri="pkg:/locale/images/$$RES$$/dtv-logo.png"  visible = "true" translation = "[130,100]"/>
    				<Label id="homeVideoTitle" visible="true" translation="[120,339]"></Label>
    				<Label id="homeVideoDesc" width="837" visible="true" wrap = "true" maxlines ="2" translation="[120,430]"></Label>
-   				<Poster id="homeVideoButton" visible="true" translation="[120,560]"></Poster>   	
-   				<LayoutGroup id="pagination">
-   				</LayoutGroup>
+   				<Poster id="homeVideoButton" visible="true" translation="[120,560]"></Poster>   	    	
    	    	</Group>
         	<Poster id="leftArrow" uri="pkg:/locale/images/$$RES$$/left_arrow.png"  visible = "false" translation = "[30,440]"/>
         	<Poster id="rightArrow" uri="pkg:/locale/images/$$RES$$/right_arrow.png"  visible = "false" translation = "[1830,440]"/>   	    	 	    	
     	</Group>
+    	
+    	<LayoutGroup id="paginationGrp" visible="true" translation="[120,670]" layoutDirection="horiz" itemSpacings="4">
+    	</LayoutGroup>
     	
     	<EpisodeScreen id="episodeSection" visible="true" translation="[1920,0]"/>
     	

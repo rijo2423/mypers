@@ -4,7 +4,6 @@
     <field id="uniqueId" type="String" value ="Video" />
     <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
     <field id="screenType" type="String" value ="screen" />
-    <field id="episodeContent" type="node" alwaysNotify="true" onChange="onEpisodeContent"/>
 	</interface>
     <script  type="text/brightscript" uri="pkg:/components/screens/video/Video.brs"/>
     <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />

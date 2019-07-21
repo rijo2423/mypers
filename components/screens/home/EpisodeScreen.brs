@@ -23,7 +23,6 @@ function getContent()
         itemNode = resultNode.createChild("EpisodeNode") 
         print "episodes[i]" ; episodes[i]
         itemNode.name = episodes[i].name
-        itemNode.index = i
         itemNode.streamUrl = episodes[i].videoUrl
         arrayContent[rowIndex,i] = itemNode
     end for
@@ -56,10 +55,9 @@ end function
 function onRowItemSelected()
 
     m.selectedItem = m.episodeListScreen.itemSelected
-    ? "m.selectedItem" ; m.selectedItem
-    contentList = m.episodeListScreen.content
+    focusedContent = m.episodeListScreen.content.getChild(m.selectedItem)
     navigationInfo = {terminate:false, moveToBackground:true, appTerminate:false, eventKey :"VideoPlayer"}
-    customInfo = {content : contentList, currentIndex : m.selectedItem, autoplay : true, deepLink : false, source : "EpisodeScreen"}
+    customInfo = {focusedCont : focusedContent, deepLink : false, source : "EpisodeScreen"}
     publishAppEvent("Ok", true, "EpisodeScreen", m.top.screenType, navigationInfo, customInfo) 
     
 end function

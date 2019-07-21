@@ -3,7 +3,6 @@
  
 <interface>
 
-  <field id="index" type="int"/>
   <field id="name" type="String"/>
   <field id="streamUrl" type="String"/>
 </interface>
