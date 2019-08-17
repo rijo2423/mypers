@@ -5,7 +5,6 @@ function init()
     'observeFields()
     
     m.deviceId = m.global.deviceId
-    ? "m.deviceId==========" ; m.deviceId
     
 end function
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="SplashPlayer" extends="Group">
+    <interface>
+    <field id="uniqueId" type="String" value ="SplashPlayer" />
+    <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
+    <field id="screenType" type="String" value ="screen" />
+	</interface>
+    <script  type="text/brightscript" uri="pkg:/components/screens/video/SplashPlayer.brs"/>
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+    <script  type="text/brightscript" uri="pkg:/source/service/GAService.brs"/>
+    <children>
+    
+		<Video id = "videoPlayer">
+		</Video>
+		
+    </children>
+</component>

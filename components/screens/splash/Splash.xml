@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<component name="Splash" extends="Group">
+    <interface>
+    <field id="uniqueId" type="String" value ="Splash" />
+    <field id="content" type="bool" value="false" onChange="contentAvailable" alwaysNotify="true" />
+	 <field id="moveToBackGround" type="bool" value="false" alwaysNotify = "true"/>
+	 <field id="moveToForeGround" type="bool" value="false" alwaysNotify = "true"/>
+	</interface>
+    <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
+    <script  type="text/brightscript" uri="pkg:/components/screens/splash/Splash.brs"/>
+    <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
+    <children>
+		<Video></Video>    	
+    </children>
+</component>

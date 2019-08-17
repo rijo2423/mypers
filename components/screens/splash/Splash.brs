@@ -1,4 +1,5 @@
 Function Init()
+    print "ggggg"
     m.source = "Home"
     m.slideshow = true
     m.homePageConstants = getHomeDimensions()
@@ -62,22 +63,11 @@ end function
 
 function contentAvailable() 
 
-    m.drawnHome = false
-    m.splashVideoUrl = m.top.splashVideo
-    if m.splashVideoUrl <> ""
-        m.drawnHome = false
-        m.source = "Home"
-        navigationInfo = {terminate:false, moveToBackground:true, appTerminate:false, eventKey :"SplashPlayer"}
-        customInfo = {url : m.splashVideoUrl, source : m.source, deepLink : false}
-        publishAppEvent("Ok", true, "Home", m.top.screenType, navigationInfo, customInfo)    
-    else
-        m.drawnHome = true
-        drawHomeScreen()
-        drawPagination()
-        createGalleryRow()
-        startSlideTimer()    
-    end if
-    
+    drawHomeScreen()
+    drawPagination()
+    createGalleryRow()
+    startSlideTimer()
+     
 end function
 
 sub onSlideTimerFired()
@@ -116,6 +106,7 @@ function showNextSlide(key)
         nextIndex = 0    
     end if
     m.currentIndex = nextIndex
+    ? "onSlideTimerFired" ; m.currentIndex 
     drawHomeScreen()
     
     removePagination()
@@ -139,6 +130,12 @@ function drawHomeScreen()
     
 end function
 
+function customInfoChanged()
+
+    'm.genericScreen.setFocus = true
+
+end function
+
 function createGalleryRow()
 
     m.genericScreen = m.top.createChild("GenericScreen")
@@ -152,13 +149,14 @@ end function
 Function OnKeyEvent(key, press) as Boolean
 
     handled = false
+    print "home press " ; press ; " key " ; key
     if press = true
+    print "hhh"
         if key = "back"
             if m.episodeScreen <> invalid and m.episodeScreenVisible = true
                  hideEpisodeScreen()
                  m.top.setFocus(true)
                  m.homeVideoButton.visible = true
-                 m.paginationGrp.visible = true
                  m.genericScreen.visible = true
                  startSlideTimer()
             else
@@ -176,11 +174,13 @@ Function OnKeyEvent(key, press) as Boolean
             end if
         else if key="down"
             stopSlideTimer()
+            print "m.episodeListScreen" ; m.episodeListScreen
             if m.episodeScreen <> invalid and m.episodeScreenVisible = true
-                
+                print "1111"
             else if m.genericScreen <> invalid
+                print "2222"
                 
-                'm.source = "RowList"
+                m.source = "RowList"
                 m.genericScreen.setFocus(true)
                 m.genericScreen.setScreenFocus = true
                 homeVideoGroupAnimation("up")
@@ -193,7 +193,7 @@ Function OnKeyEvent(key, press) as Boolean
              else
                 
                 startSlideTimer()
-                'm.source = "Home"
+                m.source = "Home"
                 m.genericScreen.setScreenFocus = false 
                 m.genericScreen.setFocus(false)
                 m.top.setFocus(true)
@@ -202,9 +202,9 @@ Function OnKeyEvent(key, press) as Boolean
              
              end if
         else if key = "OK"
+            print "m.homeVideos[m.currentIndex].videoType" ; m.homeVideos[m.currentIndex].videoType
             if m.homeVideos[m.currentIndex].videoType = "series"
                 m.homeVideoButton.visible = false
-                m.paginationGrp.visible = false
                 m.genericScreen.visible = false
                 handled = true
                 stopSlideTimer()
@@ -309,7 +309,7 @@ End Function
 
 Function onMoveToForeGround() as boolean
 
-    ? "m.drawnHome=========================" ; m.drawnHome
+    print "m.source =========" ; m.source
     if m.source = "RowList"
         if m.genericScreen <> invalid
             m.genericScreen.moveToForeGround = true
@@ -317,14 +317,8 @@ Function onMoveToForeGround() as boolean
     else if m.episodeScreen <> invalid and m.episodeScreenVisible = true   
         m.episodeScreen.setFocus(true)
         m.episodeScreen.setScreenFocus = true
-    else if m.drawnHome = true
-        m.slideshow = true
-    else if m.drawnHome = false
-        m.drawnHome = true
-        drawHomeScreen()
-        drawPagination()
-        createGalleryRow()
-        startSlideTimer()
+    else
+        m.slideshow = true    
     end if
     return true
     
@@ -339,28 +333,22 @@ End Function
 
 function homeVideoGroupAnimation(direction)
    
-   if direction = "down" and m.source = "RowList" 
+   if direction = "down"
         transAnimation1 = m.top.FindNode("transAnimation1")
         transAnimation1.control = "start"
-        transAnimation1_1 = m.top.FindNode("transAnimation1_1")
-        transAnimation1_1.control = "start"        
-   else if direction = "up" and m.source = "Home"
+   else if direction = "up"
         transAnimation2 = m.top.FindNode("transAnimation2")
-        transAnimation2.control = "start"  
-        transAnimation2_1 = m.top.FindNode("transAnimation2_1")
-        transAnimation2_1.control = "start"         
+        transAnimation2.control = "start"   
    end if
 
 end function
 
 function channelGroupAnimation(direction)
    
-   if direction = "up" and m.source = "Home"
-        m.source = "RowList"
+   if direction = "up"
         transAnimation3 = m.top.FindNode("transAnimation3")
         transAnimation3.control = "start"
-   else if direction = "down" and m.source = "RowList"
-        m.source = "Home"
+   else if direction = "down"
         transAnimation4 = m.top.FindNode("transAnimation4")
         transAnimation4.control = "start"   
    end if

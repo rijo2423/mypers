@@ -3,12 +3,30 @@ Function Init()
     m.commonConstants = getCommonDimensions()
     m.homePageConstants = getHomeDimensions()
     createBackground()
+    m.newSplashVideoUrl = ""
     m.top.addField("terminate","bool", true)
+    m.global.addField("splashVideo","string",false)
+    getRegistryInfo()
     setDeviceId()
     SetupAnalytics()
     initGlobalFontRegistry()
     
 End Function
+
+function getRegistryInfo()
+
+    m.splashVideoUrl = RegistryService_Read("dominicanatv", "splashVideoUrl")
+    if m.splashVideoUrl = invalid
+        m.splashVideoUrl = ""
+    end if
+
+end function
+
+function writeRegistryInfo(splashVideoUrl)
+
+    RegistryService_Write("dominicanatv", "splashVideoUrl", splashVideoUrl)
+
+end function
 
 function setDeviceId()
 
@@ -19,12 +37,8 @@ function setDeviceId()
     digest.Setup("sha1")
     result = digest.Process(ba)
     
-    ? "result================" ; result   
-    
     m.global.addField("deviceId","string",false)
     m.global.setField("deviceId", result)
-    
-    ?"m.global.deviceId-----------" ; m.global.deviceId
       
     
 end function
@@ -37,8 +51,6 @@ Sub SetupAnalytics()
     
     trackingID = "UA-136755410-1"
     
-    ? "trackingID" ; trackingID
-       
     ' Analytics Initialization
     m.global.RSG_analytics.init = {
          
@@ -83,9 +95,6 @@ Function parseAppLaunchParams()
         m.contentID = launchParams.ContentId
         m.mediaType = launchParams.MediaType
         
-        print "contentID" ; m.contentID
-        print "mediaType" ; m.mediaType
-        
         if m.contentID <> invalid and m.mediaType <> invalid and (m.mediaType = "special" or m.mediaType = "live")
             m.deepLink = true        
         end if
@@ -94,14 +103,49 @@ Function parseAppLaunchParams()
     
     initNavigation()
     
-    m.homeVideosFetched = false
-    m.channelsFetched = false
-    m.radiosFetched = false
-    readHomeVideos()
-    readChannels()
-    readRadios()
+    readSplashVideo()
     
 End Function
+
+function readSplashVideo()
+
+    m.splashTask = m.top.createChild("ConfigTask")
+    m.splashTask.functionName = "fetchInfo"
+    
+    requestParams = {}
+    requestParams.url = "http://dominicanatv.net/content/splash.json"
+    requestParams.httpMethod = "GET"
+    requestParams.responseType = "TEXT"
+    
+    m.splashTask.input = requestParams
+    m.splashTask.observeField("output", "onReadSplashVideoTaskCompleted")
+    m.splashTask.control = "RUN"      
+     
+end function 
+
+function onReadSplashVideoTaskCompleted()
+
+    if m.splashTask <> invalid and m.splashTask.output <> invalid and m.splashTask.output.result <> invalid
+        m.newSplashVideoUrl = m.splashTask.output.result.splashVideoUrl
+    end if   
+    
+    if m.newSplashVideoUrl = invalid
+        m.newSplashVideoUrl = ""
+    end if 
+    
+    removeSplashTask()
+    restartApp()        
+
+end function
+
+function removeSplashTask()
+
+    if m.splashTask <> invalid
+        m.top.removeChild(m.splashTask)
+        m.splashTask = invalid
+    end if 
+    
+end function
 
 function readHomeVideos()
 
@@ -122,7 +166,6 @@ end function
 function onHomeTaskCompleted()
 
     if m.homeTask <> invalid and m.homeTask.output <> invalid and m.homeTask.output.result <> invalid
-        print "m.homeTask=======" ; m.homeTask.output.result
         homeInfo = m.homeTask.output.result
         m.global.setField("homeInfo", homeInfo)
         m.homeVideosFetched = true
@@ -161,7 +204,6 @@ end function
 function onChannelTaskCompleted()
 
     if m.channelTask <> invalid and m.channelTask.output <> invalid and m.channelTask.output.result <> invalid
-        print "m.channelTask=======" ; m.channelTask.output.result
         channelInfo = m.channelTask.output.result
         m.global.setField("channelInfo", channelInfo)
         m.channelsFetched = true
@@ -198,7 +240,6 @@ end function
 function onRadioTaskCompleted()
 
     if m.radioTask <> invalid and m.radioTask.output <> invalid and m.radioTask.output.result <> invalid
-        print "m.radioTask=======" ; m.radioTask.output.result
         radioInfo = m.radioTask.output.result
         m.global.setField("radioInfo", radioInfo)
         removeRadioTask()
@@ -213,18 +254,15 @@ function removeRadioTask()
         m.top.removeChild(m.radioTask)
         m.radioTask = invalid
     end if 
-end function   
+end function 
 
 function process()
 
-    print "m.homeVideosFetched" ; m.homeVideosFetched
-    print "m.channelsFetched" ; m.channelsFetched
-    print "m.radiosFetched" ; m.radiosFetched
     if m.homeVideosFetched = true and m.channelsFetched = true and m.radiosFetched = true
         m.homeVideosFetched = false
         m.channelsFetched = false
         m.radiosFetched = false 
-        launchHome()        
+        launchHome()
     end if
 
 end function 
@@ -269,6 +307,13 @@ Function launchHome()
      deepLinkParams.contentID = m.contentID
      deepLinkParams.mediaType = m.mediaType
      m.home.deepLinkParams = deepLinkParams
+     
+     if m.splashVideoUrl <> m.newSplashVideoUrl
+        writeRegistryInfo(m.newSplashVideoUrl)
+        m.home.splashVideo = m.newSplashVideoUrl
+     else
+        m.home.splashVideo = ""      
+     end if
      
      m.home.content = true
      m.activeScreen.setFocus(true)
@@ -358,6 +403,8 @@ Function initWindowMap()
      m.windowMap["GenericScreen"] = {windowType:"screen",windowId :"GenericScreen"}
      m.windowMap["EpisodeScreen"] = {windowType:"screen",windowId :"EpisodeScreen"}
      m.windowMap["Home"] = {windowType:"screen",windowId :"Home"}
+     m.windowMap["SplashPlayer"] = {windowType:"screen",windowId :"SplashPlayer"}
+     
 End Function
 
 Function Navigate(navigationInfo, custEventInfo)
@@ -523,3 +570,12 @@ Function cleanUpAndTerminateApp()
     m.top.setField("terminate", true)'Screen Terminate
     
 End Function
+
+sub restartApp()
+    m.homeVideosFetched = false
+    m.channelsFetched = false
+    m.radiosFetched = false
+    readHomeVideos()
+    readChannels()
+    readRadios() 
+end sub

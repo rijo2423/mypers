@@ -3,8 +3,9 @@
     <interface>
     <field id="uniqueId" type="String" value ="Home" />
     <field id="deepLinkParams" type="assocarray"/>
+    <field id="splashVideo" type="String" value=""/>
     <field id="content" type="bool" value="false" onChange="contentAvailable" alwaysNotify="true" />
-    <field id="customInfo" type="assocarray" onChange="customInfoChanged" alwaysNotify="true" />
+    <field id="customInfo" type="assocarray"/>
     <field id="screenType" type="String" value ="screen" />
 	 <field id="moveToBackGround" type="bool" value="false" alwaysNotify = "true"/>
 	 <field id="moveToForeGround" type="bool" value="false" alwaysNotify = "true"/>
@@ -15,7 +16,7 @@
     <children>
     	<Group id="homeVideoGroup" visible="true">
    	    	<Group id="video">
-   	    		<Poster id="homeVideoPoster" visible="true" translation="[0,0]"></Poster>
+   	    		<Poster id="homeVideoPoster" height="1080" width="1920" visible="true" translation="[0,0]"></Poster>
 				<Poster id="logo" uri="pkg:/locale/images/$$RES$$/dtv-logo.png"  visible = "true" translation = "[130,100]"/>
    				<Label id="homeVideoTitle" visible="true" translation="[120,339]"></Label>
    				<Label id="homeVideoDesc" width="837" visible="true" wrap = "true" maxlines ="2" translation="[120,430]"></Label>
@@ -40,6 +41,16 @@
     		fieldToInterp="homeVideoGroup.translation" />
     	</Animation>
     	
+    	<Animation id="transAnimation1_1"
+	       duration="0.3"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp1_1"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, -100.0], [120.0, 670.0] ]"
+    		fieldToInterp="paginationGrp.translation" />
+    	</Animation>    	
+    	
     	<Animation id="transAnimation2"
 	       duration="0.3"
 	       repeat="false"
@@ -48,6 +59,16 @@
 	        key="[0.0, 1.0]"
 	        keyValue="[ [0.0, 0.0], [0.0, -1080.0]]"
     		fieldToInterp="homeVideoGroup.translation" />
+    	</Animation>
+
+    	<Animation id="transAnimation2_1"
+	       duration="0.3"
+	       repeat="false"
+	       easeFunction="linear" >
+    	<Vector2DFieldInterpolator id = "myInterp2_1"
+	        key="[0.0, 1.0]"
+	        keyValue="[ [120.0, 670.0], [120.0, -100.0]]"
+    		fieldToInterp="paginationGrp.translation" />
     	</Animation>
     	
     	<Animation id="transAnimation3"

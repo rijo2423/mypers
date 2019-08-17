@@ -4,6 +4,7 @@
     	<field id="appLaunchParams" type="assocarray" alwaysNotify="true" onChange="onAppLaunchParamsAvailable"/>
     </interface>
     
+    <script type="text/brightscript" uri="pkg:/source/service/RegistryServices.brs" />
     <script type="text/brightscript" uri="pkg:/components/screens/controller/Controller.brs" />
     <script  type="text/brightscript" uri="pkg:/source/common/AppConstants.brs"/>
     <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
