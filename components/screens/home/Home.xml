@@ -15,12 +15,19 @@
     <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
     <children>
     	<Group id="homeVideoGroup" visible="true">
-   	    	<Group id="video">
-   	    		<Poster id="homeVideoPoster" height="1080" width="1920" visible="true" translation="[0,0]"></Poster>
-				<Poster id="logo" uri="pkg:/locale/images/$$RES$$/dtv-logo.png"  visible = "true" translation = "[130,100]"/>
-   				<Label id="homeVideoTitle" visible="true" translation="[120,339]"></Label>
-   				<Label id="homeVideoDesc" width="837" visible="true" wrap = "true" maxlines ="2" translation="[120,430]"></Label>
-   				<Poster id="homeVideoButton" visible="true" translation="[120,560]"></Poster>   	    	
+   	    	<Group id="video1" translation="[0,0]" opacity="1.0">
+   	    		<Poster id="homeVideoPoster1" height="1080" width="1920" visible="true" translation="[0,0]"></Poster>
+				<Poster id="logo1" uri="pkg:/locale/images/$$RES$$/dtv-logo.png"  visible = "true" translation = "[130,100]"/>
+   				<Label id="homeVideoTitle1" visible="true" translation="[120,339]"></Label>
+   				<Label id="homeVideoDesc1" width="837" visible="true" wrap = "true" maxlines ="2" translation="[120,430]"></Label>
+   				<Poster id="homeVideoButton1" visible="true" translation="[120,560]"></Poster>   	    	
+   	    	</Group>
+   	    	<Group id="video2" translation="[0,0]" opacity="0.0">
+   	    		<Poster id="homeVideoPoster2" height="1080" width="1920" visible="true" translation="[0,0]"></Poster>
+				<Poster id="logo2" uri="pkg:/locale/images/$$RES$$/dtv-logo.png"  visible = "true" translation = "[130,100]"/>
+   				<Label id="homeVideoTitle2" visible="true" translation="[120,339]"></Label>
+   				<Label id="homeVideoDesc2" width="837" visible="true" wrap = "true" maxlines ="2" translation="[120,430]"></Label>
+   				<Poster id="homeVideoButton2" visible="true" translation="[120,560]"></Poster>   	    	
    	    	</Group>
         	<Poster id="leftArrow" uri="pkg:/locale/images/$$RES$$/left_arrow.png"  visible = "false" translation = "[30,440]"/>
         	<Poster id="rightArrow" uri="pkg:/locale/images/$$RES$$/right_arrow.png"  visible = "false" translation = "[1830,440]"/>   	    	 	    	
