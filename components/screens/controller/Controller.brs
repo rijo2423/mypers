@@ -15,10 +15,10 @@ End Function
 
 function getRegistryInfo()
 
-    m.splashVideoUrl = RegistryService_Read("dominicanatv", "splashVideoUrl")
-    if m.splashVideoUrl = invalid
-        m.splashVideoUrl = ""
-    end if
+    'm.splashVideoUrl = RegistryService_Read("dominicanatv", "splashVideoUrl")
+    'if m.splashVideoUrl = invalid
+    m.splashVideoUrl = ""
+    'end if
 
 end function
 
@@ -307,6 +307,9 @@ Function launchHome()
      deepLinkParams.contentID = m.contentID
      deepLinkParams.mediaType = m.mediaType
      m.home.deepLinkParams = deepLinkParams
+     
+     ? "m.splashVideoUrl" ; m.splashVideoUrl
+     ? "m.newSplashVideoUrl" ; m.newSplashVideoUrl
      
      if m.splashVideoUrl <> m.newSplashVideoUrl
         writeRegistryInfo(m.newSplashVideoUrl)

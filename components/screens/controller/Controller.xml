@@ -10,5 +10,6 @@
     <script type="text/brightscript" uri="pkg:/source/common/utils/ComponentUtils.brs" />
     
     <children>
+    	<Poster id="Background" visible="true" uri=""/>
     </children>
 </component>

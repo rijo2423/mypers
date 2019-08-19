@@ -21,25 +21,17 @@ End Function
 
 function initValues()
 
-    m.homeVideoPoster1 = m.top.findNode("homeVideoPoster1")
-    m.homeVideoTitle1 = m.top.findNode("homeVideoTitle1")
-    m.homeVideoDesc1 = m.top.findNode("homeVideoDesc1")
-    m.homeVideoButton1 = m.top.findNode("homeVideoButton1")
+    m.homeVideoTitle = m.top.findNode("homeVideoTitle")
+    m.homeVideoDesc = m.top.findNode("homeVideoDesc")
+    m.homeVideoButton = m.top.findNode("homeVideoButton")
 
-    m.homeVideoTitle1.font = m.global.fontRegistry.standard_64
-    m.homeVideoTitle1.color = "#DDE2E6"
-    m.homeVideoDesc1.color = "#DDE2E6"
-    m.homeVideoDesc1.font = m.global.fontRegistry.regular_35
+    m.homeVideoTitle.font = m.global.fontRegistry.standard_64
+    m.homeVideoTitle.color = "#DDE2E6"
+    m.homeVideoDesc.color = "#DDE2E6"
+    m.homeVideoDesc.font = m.global.fontRegistry.regular_35
     
+    m.homeVideoPoster1 = m.top.findNode("homeVideoPoster1")
     m.homeVideoPoster2 = m.top.findNode("homeVideoPoster2")
-    m.homeVideoTitle2 = m.top.findNode("homeVideoTitle2")
-    m.homeVideoDesc2 = m.top.findNode("homeVideoDesc2")
-    m.homeVideoButton2 = m.top.findNode("homeVideoButton2")
-
-    m.homeVideoTitle2.font = m.global.fontRegistry.standard_64
-    m.homeVideoTitle2.color = "#DDE2E6"
-    m.homeVideoDesc2.color = "#DDE2E6"
-    m.homeVideoDesc2.font = m.global.fontRegistry.regular_35    
     
     m.episodeScreen = m.top.findNode("episodeSection")     
 
@@ -142,12 +134,12 @@ function drawHomeScreen()
     
     m.homeVideos = m.homeInfo.videos
     m.homeVideoPoster1.uri = m.homeVideos[index].videoPoster
-    m.homeVideoTitle1.text = m.homeVideos[index].videoTitle
-    m.homeVideoDesc1.text = m.homeVideos[index].videoDesc
+    m.homeVideoTitle.text = m.homeVideos[index].videoTitle
+    m.homeVideoDesc.text = m.homeVideos[index].videoDesc
     if m.homeVideos[index].videoType = "series"
-        m.homeVideoButton1.uri = "pkg:/locale/images/$$RES$$/Episode.png"
+        m.homeVideoButton.uri = "pkg:/locale/images/$$RES$$/Episode.png"
     else
-        m.homeVideoButton1.uri = "pkg:/locale/images/$$RES$$/Watch.png"
+        m.homeVideoButton.uri = "pkg:/locale/images/$$RES$$/Watch.png"
     end if
     m.isFirst = true
     
@@ -158,32 +150,20 @@ function setNextVideo()
     index = m.currentIndex
     
     if m.isFirst = true
-    
         m.homeVideoPoster2.uri = m.homeVideos[index].videoPoster
-        m.homeVideoTitle2.text = m.homeVideos[index].videoTitle
-        m.homeVideoDesc2.text = m.homeVideos[index].videoDesc
-        if m.homeVideos[index].videoType = "series"
-            m.homeVideoButton2.uri = "pkg:/locale/images/$$RES$$/Episode.png"
-        else
-            m.homeVideoButton2.uri = "pkg:/locale/images/$$RES$$/Watch.png"
-        end if
-        
         m.isFirst = false
-    
     else
-    
-        m.homeVideoPoster1.uri = m.homeVideos[index].videoPoster
-        m.homeVideoTitle1.text = m.homeVideos[index].videoTitle
-        m.homeVideoDesc1.text = m.homeVideos[index].videoDesc
-        if m.homeVideos[index].videoType = "series"
-            m.homeVideoButton1.uri = "pkg:/locale/images/$$RES$$/Episode.png"
-        else
-            m.homeVideoButton1.uri = "pkg:/locale/images/$$RES$$/Watch.png"
-        end if 
-        
+        m.homeVideoPoster1.uri = m.homeVideos[index].videoPoster 
         m.isFirst = true   
-    
     end if
+    
+    m.homeVideoTitle.text = m.homeVideos[index].videoTitle
+    m.homeVideoDesc.text = m.homeVideos[index].videoDesc
+    if m.homeVideos[index].videoType = "series"
+        m.homeVideoButton.uri = "pkg:/locale/images/$$RES$$/Episode.png"
+    else
+        m.homeVideoButton.uri = "pkg:/locale/images/$$RES$$/Watch.png"
+    end if    
     
 end function
 
@@ -205,8 +185,7 @@ Function OnKeyEvent(key, press) as Boolean
             if m.episodeScreen <> invalid and m.episodeScreenVisible = true
                  hideEpisodeScreen()
                  m.top.setFocus(true)
-                 m.homeVideoButton1.visible = true
-                 m.homeVideoButton2.visible = true
+                 m.homeVideoButton.visible = true
                  m.paginationGrp.visible = true
                  m.genericScreen.visible = true
                  startSlideTimer()
@@ -252,8 +231,7 @@ Function OnKeyEvent(key, press) as Boolean
              end if
         else if key = "OK"
             if m.homeVideos[m.currentIndex].videoType = "series"
-                m.homeVideoButton1.visible = false
-                m.homeVideoButton2.visible = false
+                m.homeVideoButton.visible = false
                 m.paginationGrp.visible = false
                 m.genericScreen.visible = false
                 handled = true
